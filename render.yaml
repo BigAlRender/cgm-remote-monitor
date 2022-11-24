@@ -6,6 +6,8 @@ services:
     region: oregon # optional (defaults to oregon)
     plan: starter # optional (defaults to starter)
     branch: deploy_to_render
+    buildCommand: npm install; npm run build;
+    startCommand: npm start;
     healthCheckPath: /
     envVars:
       - key: MONGODB_URI # The MongoDB Connection String to connect to your MongoDB cluster. If you don't have this from MongoDB Atlas, please re-read installation instructions at http://nightscout.github.io/nightscout/new_user/ before continuing",
