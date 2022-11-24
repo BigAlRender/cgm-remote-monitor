@@ -1,4 +1,14 @@
 services:
+  - type: pserv
+    name: nightscout-mongo
+    env: docker
+    repo: https://github.com/render-examples/mongodb
+    disk:
+      name: data
+      mountPath: /data/db
+      sizeGB: 1
+    
+
   - type: web
     name: nightscout-cgm
     env: node
@@ -10,12 +20,17 @@ services:
     startCommand: npm start
     healthCheckPath: /
     envVars:
+       - key: MONGODB_URI
+         fromService:
+          type: pserv
+          name: nightscout-mongo
+          property: hostport
       - key: INSECURE_USE_HTTP
         value: true
       - key: HOSTNAME
         value: "0.0.0.0"
-      - key: MONGODB_URI # The MongoDB Connection String to connect to your MongoDB cluster. If you don't have this from MongoDB Atlas, please re-read installation instructions at http://nightscout.github.io/nightscout/new_user/ before continuing",
-        value: ""
+      # - key: MONGODB_URI # The MongoDB Connection String to connect to your MongoDB cluster. If you don't have this from MongoDB Atlas, please re-read installation instructions at http://nightscout.github.io/nightscout/new_user/ before continuing",
+      #   value: ""
       - key: ALARM_HIGH # Default setting for new browser views, for the High alarm (triggered when BG crosses BG_TARGET_TOP). ('on' or 'off')",
         value: "on"
       - key: ALARM_LOW # Default setting for new browser views, for the Low alarm (triggered when BG crosses BG_TARGET_BOTTOM). ('on' or 'off')",
